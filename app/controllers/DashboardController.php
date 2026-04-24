@@ -6,7 +6,7 @@ class DashboardController {
     private $db;
     private $produkModel;
 
-    // 🔥 KONEKSI DATABASE
+    // KONEKSI DATABASE
     public function __construct() {
         $this->db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
         $this->produkModel = new Produk($this->db);
@@ -20,7 +20,6 @@ class DashboardController {
         }
     }
 
-    // ================= DASHBOARD (SHOWCASE PRODUK) =================
     public function index() {
         $this->checkLogin();
 
@@ -29,10 +28,22 @@ class DashboardController {
         include __DIR__ . '/../views/dashboard/dashboard.php';
     }
 
-    // ================= LOGOUT =================
     public function logout() {
         session_destroy();
         header("Location: /login");
         exit;
     }
+    public function detail() {
+
+    $id = $_GET['id'];
+
+    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+
+    $stmt = $db->prepare("SELECT * FROM produk WHERE id_produk=?");
+    $stmt->execute([$id]);
+
+    $produk = $stmt->fetch();
+
+    require __DIR__ . '/../views/dashboard/detail.php';
+}
 }
