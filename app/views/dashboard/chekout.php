@@ -107,7 +107,7 @@
 
             <label>💳 Metode Pembayaran</label>
             <select name="metode" required>
-                <option value="">-- Pilih Metode --</option>
+                <option value="">-- Pilih Metode Pembayaran --</option>
                 <option value="COD">COD (Bayar di Tempat)</option>
                 <option value="Transfer">Transfer Bank</option>
                 <option value="E-Wallet">E-Wallet</option>
