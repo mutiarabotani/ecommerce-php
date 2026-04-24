@@ -1,64 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Riwayat Transaksi</title>
+    <title>Transaksi</title>
 
     <style>
         body {
-            font-family: Arial;
+            font-family: 'Poppins', sans-serif;
             background: #f5f5f5;
-            margin: 0;
-        }
-
-        .header {
-            background: #ee4d2d;
-            color: white;
-            padding: 15px;
-            font-size: 20px;
         }
 
         .container {
+            max-width: 700px;
+            margin: auto;
             padding: 20px;
         }
 
         .card {
             background: white;
-            border-radius: 10px;
             padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
             display: flex;
-            align-items: center;
             gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            align-items: center;
         }
 
-        .card img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
+        img {
+            width: 70px;
+            height: 70px;
             border-radius: 8px;
+            object-fit: cover;
         }
 
-        .info {
-            flex: 1;
+        .status {
+            font-size: 13px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
         }
 
-        .info h4 {
-            margin: 0;
-        }
+        .menunggu { background: orange; color: white; }
+        .diproses { background: blue; color: white; }
+        .dikirim { background: purple; color: white; }
+        .selesai { background: green; color: white; }
+        .dibatalkan { background: gray; color: white; }
 
-        .price {
-            color: #ee4d2d;
-            font-weight: bold;
-        }
-
-        .total {
-            text-align: right;
-        }
-
-        .btn {
-            margin-top: 10px;
-            padding: 6px 12px;
+        button {
+            margin-top: 5px;
+            padding: 5px 10px;
             border: none;
             background: #ee4d2d;
             color: white;
@@ -66,55 +56,71 @@
             cursor: pointer;
         }
 
-        .empty {
-            text-align: center;
-            margin-top: 50px;
+        .cancel-btn {
+            background: red;
         }
     </style>
 </head>
-
 <body>
-
-<div class="header">🛒 Riwayat Transaksi</div>
 
 <div class="container">
 
-<?php if(empty($data)): ?>
+<h2>📦 Riwayat Transaksi</h2>
 
-    <div class="empty">
-        <h3>Belum ada transaksi 😢</h3>
-        <a href="/dashboard">Belanja sekarang</a>
+<?php foreach($data as $t): ?>
+
+<?php
+$img = "/public/img/" . ($t['gambar'] ?? 'default.png');
+$statusClass = strtolower($t['status']);
+?>
+
+<div class="card">
+
+    <img src="<?= $img ?>">
+
+    <div style="flex:1;">
+        <h4><?= $t['nama_produk'] ?></h4>
+        <p>Jumlah: <?= $t['jumlah'] ?></p>
+        <p>Total: Rp <?= number_format($t['total']) ?></p>
+
+        <span class="status <?= $statusClass ?>">
+            <?= $t['status'] ?>
+        </span>
+
+        <!-- UPDATE STATUS -->
+        <?php if($t['status'] != 'Selesai' && $t['status'] != 'Dibatalkan'): ?>
+
+        <form method="POST" action="/updateStatus">
+            <input type="hidden" name="id" value="<?= $t['id_transaksi'] ?>">
+
+            <?php if($t['status'] == 'Menunggu'): ?>
+                <button name="status" value="Diproses">Proses</button>
+            <?php elseif($t['status'] == 'Diproses'): ?>
+                <button name="status" value="Dikirim">Kirim</button>
+            <?php elseif($t['status'] == 'Dikirim'): ?>
+                <button name="status" value="Selesai">Selesaikan</button>
+            <?php endif; ?>
+
+        </form>
+
+        <?php endif; ?>
+
+        <!-- BATALKAN PESANAN -->
+        <?php if($t['status'] == 'Menunggu'): ?>
+        <form method="POST" action="/cancelOrder">
+            <input type="hidden" name="id" value="<?= $t['id_transaksi'] ?>">
+            <button class="cancel-btn">Batalkan</button>
+        </form>
+        <?php endif; ?>
+
     </div>
 
-<?php else: ?>
+</div>
 
-    <?php foreach($data as $t): ?>
+<?php endforeach; ?>
 
-    <?php
-    $img = "/public/img/" . ($t['gambar'] ?? 'default.png');
-    ?>
-
-    <div class="card">
-
-        <img src="<?= $img ?>">
-
-        <div class="info">
-            <h4><?= $t['nama_produk'] ?></h4>
-            <div>Jumlah: <?= $t['jumlah'] ?></div>
-            <div class="price">Rp <?= number_format($t['total']) ?></div>
-            <small><?= $t['tanggal'] ?></small>
-        </div>
-
-        <div class="total">
-            <strong>Total</strong><br>
-            Rp <?= number_format($t['total']) ?>
-        </div>
-
-    </div>
-
-    <?php endforeach; ?>
-
-<?php endif; ?>
+<br>
+<a href="/dashboard">⬅ Kembali</a>
 
 </div>
 

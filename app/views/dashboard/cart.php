@@ -41,9 +41,27 @@
             font-weight: bold;
         }
 
-        .qty {
-            font-size: 13px;
-            color: gray;
+        .qty-box {
+            margin-top: 5px;
+        }
+
+        .qty-box button {
+            padding: 3px 8px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+        }
+
+        .qty-box strong {
+            margin: 0 10px;
+        }
+
+        .remove-btn {
+            color: red;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-top: 5px;
         }
 
         .total {
@@ -64,6 +82,11 @@
             color: white;
             border: none;
             border-radius: 8px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
         }
     </style>
 </head>
@@ -95,7 +118,30 @@
         <div class="info">
             <h4><?= $p['nama_produk'] ?></h4>
             <div class="price">Rp <?= number_format($p['harga']) ?></div>
-            <div class="qty">Jumlah: <?= $p['qty'] ?></div>
+
+            <!-- QTY -->
+            <div class="qty-box">
+
+                <form method="POST" action="/updateQty" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $p['id_produk'] ?>">
+                    <button name="action" value="minus">➖</button>
+                </form>
+
+                <strong><?= $p['qty'] ?></strong>
+
+                <form method="POST" action="/updateQty" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $p['id_produk'] ?>">
+                    <button name="action" value="plus">➕</button>
+                </form>
+
+            </div>
+
+            <!-- HAPUS -->
+            <form method="POST" action="/removeItem">
+                <input type="hidden" name="id" value="<?= $p['id_produk'] ?>">
+                <button class="remove-btn">Hapus</button>
+            </form>
+
         </div>
 
         <div class="total">
@@ -106,9 +152,19 @@
 
     <?php endforeach; ?>
 
+    <?php
+    $ongkir = 10000;
+    $totalAkhir = $grandTotal + $ongkir;
+    ?>
+
     <div class="footer">
-        <h3>Total: Rp <?= number_format($grandTotal) ?></h3>
-        <button class="btn">Checkout</button>
+        <p>Subtotal: Rp <?= number_format($grandTotal) ?></p>
+        <p>Ongkir: Rp <?= number_format($ongkir) ?></p>
+        <h3>Total: Rp <?= number_format($totalAkhir) ?></h3>
+
+        <form action="/checkoutCart" method="GET">
+            <button class="btn">Checkout</button>
+        </form>
     </div>
 
 <?php endif; ?>

@@ -23,13 +23,19 @@ $router->post('/register', 'AuthController@processRegister');
 // DASHBOARD
 $router->get('/dashboard', 'DashboardController@index');
 
-// TRANSAKSI
+
 // TRANSAKSI
 $router->post('/cart', 'TransaksiController@addToCart');
 $router->get('/cart', 'TransaksiController@index'); 
 $router->post('/beli', 'TransaksiController@beli');
 $router->get('/transaksi', 'TransaksiController@transaksi');
 $router->get('/checkout', 'TransaksiController@checkout');
+$router->post('/updateQty', 'TransaksiController@updateQty');
+$router->post('/removeItem', 'TransaksiController@removeItem');
+$router->get('/checkoutCart', 'TransaksiController@checkoutCartView');
+$router->post('/checkoutCart', 'TransaksiController@checkoutCartProcess');
+$router->post('/updateStatus', 'TransaksiController@updateStatus');
+$router->post('/cancelOrder', 'TransaksiController@cancelOrder');
 
 // LOGOUT
 $router->get('/logout', 'AuthController@logout');

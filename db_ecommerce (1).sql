@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2026 at 02:29 PM
+-- Generation Time: Apr 24, 2026 at 04:13 PM
 -- Server version: 10.4.32-MariaDB-log
 -- PHP Version: 8.5.5
 
@@ -130,18 +130,20 @@ CREATE TABLE `transaksi` (
   `id_produk` int(11) DEFAULT NULL,
   `jumlah` int(11) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
-  `metode_pembayaran` varchar(50) DEFAULT NULL
+  `metode_pembayaran` varchar(50) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'Menunggu'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `tanggal`, `total`, `id_produk`, `jumlah`, `alamat`, `metode_pembayaran`) VALUES
-(1, NULL, 150000, 6, 1, NULL, NULL),
-(2, NULL, 150000, 6, 1, NULL, NULL),
-(3, NULL, 150000, 6, 1, 'Kp Cikoranji', 'COD'),
-(4, NULL, 120000, 9, 1, 'bandung', 'COD');
+INSERT INTO `transaksi` (`id_transaksi`, `tanggal`, `total`, `id_produk`, `jumlah`, `alamat`, `metode_pembayaran`, `status`) VALUES
+(1, NULL, 150000, 6, 1, NULL, NULL, 'Menunggu'),
+(2, NULL, 150000, 6, 1, NULL, NULL, 'Menunggu'),
+(3, NULL, 150000, 6, 1, 'Kp Cikoranji', 'COD', 'Menunggu'),
+(4, NULL, 120000, 9, 1, 'bandung', 'COD', 'Menunggu'),
+(5, NULL, 140000, 19, 1, 'bandung', 'COD', 'Menunggu');
 
 -- --------------------------------------------------------
 
@@ -243,7 +245,7 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
