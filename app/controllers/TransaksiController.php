@@ -4,10 +4,30 @@ class TransaksiController {
 
     public function index() {
 
-        $cart = $_SESSION['cart'] ?? [];
+    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
 
-        require __DIR__ . '/../views/dashboard/cart.php';
+    $cart = $_SESSION['cart'] ?? [];
+
+    $data = [];
+
+    if(!empty($cart)){
+
+        // hitung jumlah tiap produk
+        $qty = array_count_values($cart);
+
+        $ids = implode(',', array_keys($qty));
+
+        $produk = $db->query("SELECT * FROM produk WHERE id_produk IN ($ids)")->fetchAll();
+
+        foreach($produk as $p){
+            $p['qty'] = $qty[$p['id_produk']];
+            $p['subtotal'] = $p['harga'] * $p['qty'];
+            $data[] = $p;
+        }
     }
+
+    require __DIR__ . '/../views/dashboard/cart.php';
+}
 
     public function addToCart() {
 
