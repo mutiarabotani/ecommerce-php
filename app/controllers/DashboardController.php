@@ -8,7 +8,7 @@ class DashboardController {
 
     // KONEKSI DATABASE
     public function __construct() {
-        $this->db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+        $this->db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
         $this->produkModel = new Produk($this->db);
     }
 

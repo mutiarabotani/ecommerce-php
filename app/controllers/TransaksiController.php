@@ -4,7 +4,7 @@ class TransaksiController {
 
     public function index() {
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $cart = $_SESSION['cart'] ?? [];
 
@@ -50,7 +50,7 @@ class TransaksiController {
     $alamat = $_POST['alamat'];
     $metode = $_POST['metode'];
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $stmt = $db->prepare("SELECT * FROM produk WHERE id_produk=?");
     $stmt->execute([$id]);
@@ -73,7 +73,7 @@ class TransaksiController {
 }
 public function transaksi() {
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $data = $db->query("
         SELECT t.*, p.nama_produk, p.gambar
@@ -88,7 +88,7 @@ public function checkout() {
 
     $id = $_GET['id_produk'];
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $stmt = $db->prepare("SELECT * FROM produk WHERE id_produk=?");
     $stmt->execute([$id]);
@@ -123,7 +123,7 @@ public function removeItem() {
 }
 public function checkoutCartView() {
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $cart = $_SESSION['cart'] ?? [];
 
@@ -147,7 +147,7 @@ public function checkoutCartView() {
 }
 public function checkoutCartProcess() {
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $alamat = $_POST['alamat'];
     $metode = $_POST['metode'];
@@ -188,7 +188,7 @@ public function updateStatus() {
     $id = $_POST['id'];
     $status = $_POST['status'];
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     $stmt = $db->prepare("UPDATE transaksi SET status=? WHERE id_transaksi=?");
     $stmt->execute([$status, $id]);
@@ -199,7 +199,7 @@ public function cancelOrder() {
 
     $id = $_POST['id'];
 
-    $db = new PDO("mysql:host=localhost;dbname=db_ecommerce", "root", "");
+    $db = new PDO("mysql:host=localhost;dbname=shop_db", "root", "");
 
     // hanya bisa cancel jika masih Menunggu
     $stmt = $db->prepare("UPDATE transaksi 
